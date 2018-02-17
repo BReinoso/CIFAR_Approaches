@@ -11,6 +11,7 @@ Personal work on CIFAR dataset testing some original and article-based ideas.
     1.5- VERY DEEP CONVOLUTIONAL NETWORKS FOR LARGE-SCALE IMAGE RECOGNITION: https://arxiv.org/pdf/1409.1556.pdf
     
 #Project Environment:
+
     2.1- Toolkit CUDA Development 9.0
     2.2- Cudnn 7.0
     2.3- Tensorflow GPU
