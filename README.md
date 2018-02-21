@@ -16,4 +16,4 @@ Personal work on CIFAR dataset testing some original and article-based ideas.
     2.2- Cudnn 7.0
     2.3- Tensorflow GPU
     2.4- Anaconda Environment
-    2.5- GPU GTX 760 (For the moment)
+    2.5- GPU GTX 1080 Ti

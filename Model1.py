@@ -5,8 +5,8 @@ from Constants import *
 import matplotlib.pyplot as plt
 
 def create_placeholders():
-    X = tf.placeholder(tf.uint8, shape=(None, IMAGE_SIZE, IMAGE_SIZE, 3))
-    Y = tf.placeholder(tf.uint8, shape=(None, NUM_CLASSES))
+    X = tf.placeholder(tf.float32, shape=(None, IMAGE_SIZE, IMAGE_SIZE, 3))
+    Y = tf.placeholder(tf.float32, shape=(None, NUM_CLASSES))
     return X, Y
 
 
@@ -51,7 +51,7 @@ def forward_propagation(X, parameters):
     P2 = tf.contrib.layers.flatten(P2)
     # FULLY-CONNECTED without non-linear activation function (not not call softmax).
     # 6 neurons in output layer. Hint: one of the arguments should be "activation_fn=None"
-    Z3 = tf.contrib.layers.fully_connected(P2, 6, activation_fn=None)
+    Z3 = tf.contrib.layers.fully_connected(P2, NUM_CLASSES, activation_fn=None)
 
     return Z3
 
@@ -67,8 +67,22 @@ def compute_cost(Z3, Y):
     Returns:
     cost - Tensor of the cost function
     """
-    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=Z3, labels=Y))
+    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=Z3, labels=Y))
     return cost
+
+
+def create_minibatches (X_train, Y_train, num_minibatches, batch_size = MINIBATHC_SIZE):
+    minibatches_X = []
+    minibatches_Y = []
+    for i in range(num_minibatches):
+            minibatches_X.append(X_train[i*batch_size: batch_size*(i+1)])
+            minibatches_Y.append(Y_train[i * batch_size: batch_size * (i + 1)])
+    minibatches_X.append(X_train[num_minibatches*batch_size:])
+    minibatches_Y.append(Y_train[num_minibatches * batch_size:])
+    minibatches_X = np.array(minibatches_X)
+    minibatches_Y = np.array(minibatches_Y)
+    return minibatches_X, minibatches_Y
+
 
 
 def model(X_train, Y_train, X_test, Y_test, learning_rate=0.009,
@@ -114,6 +128,10 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate=0.009,
     # Initialize all the variables globally
     init = tf.global_variables_initializer()
 
+    #Creating Minibatches
+    num_batches = int(X_train.shape[0] / MINIBATHC_SIZE)
+    minibatches_X, minibatches_Y = create_minibatches(X_train, Y_train, num_batches)
+
     # Start the session to compute the tensorflow graph
     with tf.Session() as sess:
 
@@ -123,11 +141,11 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate=0.009,
         # Do the training loop
         for epoch in range(num_epochs):
             batch_cost= 0
-            num_batches = len(X_train)
-            for batch in range(num_batches):
+            for minibatch in range(num_batches):
                 # Select a minibatch
-                batch_X = X_train[batch]
-                batch_Y = Y_train[batch]
+                batch_X = minibatches_X[minibatch]
+                batch_Y = minibatches_Y[minibatch]
+
                 # IMPORTANT: The line that runs the graph on a minibatch.
                 # Run the session to execute the optimizer and the cost, the feedict should contain a minibatch for (X,Y).
                 _, temp_cost = sess.run([optimizer, cost], feed_dict={X: batch_X, Y: batch_Y})
@@ -152,7 +170,9 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate=0.009,
         # Calculate accuracy on the test set
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
         print(accuracy)
-        train_accuracy = accuracy.eval({X: X_train, Y: Y_train})
+        train_accuracy = 0
+        for i in range(num_batches):
+            train_accuracy = (train_accuracy + accuracy.eval({X: minibatches_X[i], Y: minibatches_Y[i]}))/num_batches
         test_accuracy = accuracy.eval({X: X_test, Y: Y_test})
         print("Train Accuracy:", train_accuracy)
         print("Test Accuracy:", test_accuracy)

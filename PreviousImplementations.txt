@@ -1,0 +1,66 @@
+    -------------------------- IMG SAVE TO TEST RESHAPE ----------
+
+    #temp = np.zeros([1,32,32,3])
+    #temp[0]=X1[50,:,:,:]
+    #img,_ = rotate_images(temp, Y1[0])
+    #img = batches_array[50,:,:,:]
+    #plt.imshow(img)
+    #plt.savefig(CIFART_IMAGES+"FloatImage.png")
+
+    --------------------------- TRAIN DATA IN DIFFERENT BATCHES ---------------
+
+
+    # Preparing the data to be treatable and performing data augmentation
+    #for i in range(len(batches_array)):
+    #    batches_array[i]= batches_array[i].reshape(3,IMAGE_SIZE,IMAGE_SIZE,BATCH_SIZE).transpose([3,1,2,0])
+    #    labels_array[i]= labels_array[i].transpose([1,0])
+    #    rotated_images, rotated_labels = rotate_images(batches_array[i],labels_array[i])
+    #    flipped_images,flipped_labels = flip_images(batches_array[i],labels_array[i])
+    #    batches_array[i] = np.concatenate((batches_array[i],rotated_images), axis=0)
+    #    labels_array[i] = np.concatenate((labels_array[i],rotated_labels), axis=0)
+    #    batches_array[i] = np.concatenate((batches_array[i], rotated_images),axis=0)
+    #    labels_array[i] = np.concatenate((labels_array[i], rotated_labels),axis=0)
+    #    batches_array[i] = image_convertion(batches_array[i])
+    #Extracting test set
+
+    --------------------- DEV SET ----------------------
+
+    # dev_X = X1[:100,:,:,:]
+    # dev_Y = Y1[:100,:]
+    # rotated_images, rotated_labels = rotate_images(dev_X, dev_Y)
+    # flipped_images, flipped_labels = flip_images(dev_X, dev_Y)
+    # dev_Y = np.concatenate((dev_Y,rotated_labels), axis=0)
+    # dev_Y = np.concatenate((dev_Y,flipped_labels), axis=0)
+    # dev_X = np.concatenate((dev_X,rotated_images), axis=0)
+    # dev_X = np.concatenate((dev_X,flipped_images), axis=0)
+    # dev_X = image_convertion(dev_X)
+    # dev_Train_Imgs = np.zeros([1,700,IMAGE_SIZE,IMAGE_SIZE,3],dtype=np.float32)
+    # dev_Train_Lbls = np.zeros([1, 700, NUM_CLASSES])
+    # dev_Train_Imgs[0]= dev_X
+    # dev_Train_Lbls[0] = dev_Y
+
+    ----------------------- MODEL FOR DATA IN BATCHES ---------------------------
+
+            for epoch in range(num_epochs):
+            batch_cost= 0
+            num_batches = len(X_train)
+            for batch in range(num_batches):
+                # Select a minibatch
+                batch_X = X_train[batch]
+                batch_Y = Y_train[batch]
+                # IMPORTANT: The line that runs the graph on a minibatch.
+                # Run the session to execute the optimizer and the cost, the feedict should contain a minibatch for (X,Y).
+                _, temp_cost = sess.run([optimizer, cost], feed_dict={X: batch_X, Y: batch_Y})
+                batch_cost += temp_cost / num_batches
+            # Print the cost every epoch
+            if print_cost == True and epoch % 5 == 0:
+                print("Cost after epoch %i: %f" % (epoch, batch_cost))
+            if print_cost == True and epoch % 1 == 0:
+                costs.append(batch_cost)
+
+    ------------------------- ACCURACY FOR DATA IN DIFFERENT BATCHES ----------------
+
+    train_accuracy = 0
+        for i in range(len(X_train)):
+            train_accuracy = train_accuracy + accuracy.eval({X: X_train[i], Y: Y_train[i]})
+        test_accuracy = accuracy.eval({X: X_test, Y: Y_test})
