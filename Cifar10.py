@@ -3,7 +3,7 @@ import numpy as np
 from Constants import *
 from Augmentation import *
 from ExtractData import *
-from Model1 import *
+from Model2 import *
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import tensorflow as tf
@@ -49,19 +49,7 @@ if __name__ == "__main__":
     np.random.shuffle(temp)
     batches_array = batches_array[temp]
     labels_array = labels_array[temp]
-
-
     X_test = X_test.reshape(3,IMAGE_SIZE,IMAGE_SIZE,BATCH_SIZE).transpose([3,1,2,0])
     X_test = image_convertion(X_test)
     Y_test = Y_test.transpose([1,0])
-    # dev_X = X1[:100,:,:,:]
-    # dev_Y = Y1[:100,:]
-    # rotated_images, rotated_labels = rotate_images(dev_X, dev_Y)
-    # flipped_images, flipped_labels = flip_images(dev_X, dev_Y)
-    # dev_Y = np.concatenate((dev_Y,rotated_labels), axis=0)
-    # dev_Y = np.concatenate((dev_Y,flipped_labels), axis=0)
-    # dev_X = np.concatenate((dev_X,rotated_images), axis=0)
-    # dev_X = np.concatenate((dev_X,flipped_images), axis=0)
-    # dev_X = image_convertion(dev_X)
     _, _, parameters = model(batches_array, labels_array, X_test, Y_test)
-    #_, _, parameters = model(dev_X, dev_Y, X_test, Y_test)
