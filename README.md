@@ -2,7 +2,7 @@
 Personal work on CIFAR dataset testing some original and article-based ideas.
 
 
-#Related Artciles:
+# Related Artciles:
 
     1.1- SNAPSHOT ENSEMBLES: https://arxiv.org/pdf/1704.00109.pdf
     1.2- Spatially-sparse convolutional neural networks: https://arxiv.org/pdf/1409.6070.pdf
@@ -10,7 +10,7 @@ Personal work on CIFAR dataset testing some original and article-based ideas.
     1.4- Network In Network: https://arxiv.org/pdf/1312.4400.pdf
     1.5- VERY DEEP CONVOLUTIONAL NETWORKS FOR LARGE-SCALE IMAGE RECOGNITION: https://arxiv.org/pdf/1409.1556.pdf
     
-#Project Environment:
+# Project Environment:
 
     2.1- Toolkit CUDA Development 9.0
     2.2- Cudnn 7.0
@@ -19,7 +19,7 @@ Personal work on CIFAR dataset testing some original and article-based ideas.
     2.5- GPU GTX 1080 Ti
 	2.6- PyCharm Pro with student license
 
-#Input Images Structure
+# Input Images Structure
 
 	3.1 - Images data: The extracted data has a shape of (3072,10000) where 10000 are the number of images of the batch (a total of 5 batches in different documents) and 3072 is the value of the different pixels for each image. 
 		The first step to prepare the data is reshape it to (3, 32, 32, 10000) to collect each image in with its channels.
@@ -27,7 +27,7 @@ Personal work on CIFAR dataset testing some original and article-based ideas.
 		
 	3.2- Label data: Label data is given with (10, 10000) shape. The only step is the transpose of these values to have shape as (10000, 10)
 
-#Python Files
+# Python Files
 
 	4.1- Augmentation.py: Implementation of two different methods of augmentation. The first one is the rotation of the original image with a 90 grade angle three times.
 		The second one is the flip function to obtain there mirrored images.
@@ -38,7 +38,7 @@ Personal work on CIFAR dataset testing some original and article-based ideas.
 	4.5- ExtractData.py: Python fail to define the functions to extract the raw data from CIFAR dataset
 	4.6- ModelN.py: Python files where N is substituted by  a number representing the Model defined. Here are some approaches of models to try with the dataset.
 	
-#Models
+# Models
 
 	4.1- Very simple mode based in a programming assignment from Coursera Convolutional Neural Networks (https://www.coursera.org/learn/convolutional-neural-networks/home/info):
 		Input Layer: Image of size 32X32X3
