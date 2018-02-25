@@ -171,9 +171,15 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate=0.009,
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
         print(accuracy)
         train_accuracy = 0
+        test_accuracy = 0
+        num_batches_test = int(X_test.shape[0] / MINIBATHC_SIZE)
+        minibatches_X_test, minibatches_Y_test = create_minibatches(X_test, Y_test, num_batches_test)
         for i in range(num_batches):
-            train_accuracy = (train_accuracy + accuracy.eval({X: minibatches_X[i], Y: minibatches_Y[i]}))/num_batches
-        test_accuracy = accuracy.eval({X: X_test, Y: Y_test})
+            train_accuracy = (train_accuracy + accuracy.eval({X: minibatches_X[i], Y: minibatches_Y[i]}))
+        for i in range(num_batches_test):
+            test_accuracy = (test_accuracy + accuracy.eval({X: minibatches_X_test[i], Y: minibatches_Y_test[i]}))
+        train_accuracy = train_accuracy/num_batches
+        test_accuracy = test_accuracy/num_batches_test
         print("Train Accuracy:", train_accuracy)
         print("Test Accuracy:", test_accuracy)
 

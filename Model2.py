@@ -203,9 +203,10 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate = LEARNING_RATE,
         minibatches_X_test, minibatches_Y_test = create_minibatches(X_test, Y_test, num_batches_test)
         for i in range(num_batches):
             train_accuracy = (train_accuracy + accuracy.eval({X: minibatches_X[i], Y: minibatches_Y[i]}))
+        for i in range(num_batches_test):
             test_accuracy = (test_accuracy + accuracy.eval({X: minibatches_X_test[i], Y: minibatches_Y_test[i]}))
         train_accuracy = train_accuracy/num_batches
-        test_accuracy = accuracy.eval({X: X_test, Y: Y_test})
+        test_accuracy = test_accuracy/num_batches_test
         print("Train Accuracy:", train_accuracy)
         print("Test Accuracy:", test_accuracy)
 
