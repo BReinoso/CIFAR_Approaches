@@ -39,6 +39,7 @@ Personal work on CIFAR dataset testing some original and article-based ideas.
 	4.6- ModelN.py: Python files where N is substituted by  a number representing the Model defined. Here are some approaches of models to try with the dataset.
 	
 #Models
+
 	4.1- Very simple mode based in a programming assignment from Coursera Convolutional Neural Networks (https://www.coursera.org/learn/convolutional-neural-networks/home/info):
 		Input Layer: Image of size 32X32X3
 		Layer 1: Convolutional layer with 8 filters 4X4 and stride=1 and padding= SAME. Activation function= RELU
