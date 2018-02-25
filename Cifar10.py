@@ -12,10 +12,10 @@ import tensorflow as tf
 if __name__ == "__main__":
     # Extracting images and labels from the files
     X1, Y1 = get_data(BATCH1)
-    X1= X1.reshape(3,IMAGE_SIZE,IMAGE_SIZE,BATCH_SIZE).transpose([3,1,2,0])
+    X1 = X1.reshape(3,IMAGE_SIZE,IMAGE_SIZE,BATCH_SIZE).transpose([3,1,2,0])
     Y1 = Y1.transpose([1,0])
     X2, Y2 = get_data(BATCH2)
-    X2= X2.reshape(3,IMAGE_SIZE,IMAGE_SIZE,BATCH_SIZE).transpose([3,1,2,0])
+    X2 = X2.reshape(3,IMAGE_SIZE,IMAGE_SIZE,BATCH_SIZE).transpose([3,1,2,0])
     Y2 = Y2.transpose([1,0])
     X3, Y3 = get_data(BATCH3)
     X3= X3.reshape(3,IMAGE_SIZE,IMAGE_SIZE,BATCH_SIZE).transpose([3,1,2,0])

@@ -50,7 +50,7 @@ def forward_propagation(X, parameters):
     # FLATTEN
     P2 = tf.contrib.layers.flatten(P2)
     # FULLY-CONNECTED without non-linear activation function (not not call softmax).
-    # 6 neurons in output layer. Hint: one of the arguments should be "activation_fn=None"
+    # 10 neurons in output layer. Hint: one of the arguments should be "activation_fn=None"
     Z3 = tf.contrib.layers.fully_connected(P2, NUM_CLASSES, activation_fn=None)
 
     return Z3

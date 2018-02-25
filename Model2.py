@@ -12,11 +12,11 @@ def create_placeholders():
 
 def initialize_parameters():
     # 32 filters with shape  [4,4,3]
-    W1 = tf.get_variable("W1", [4, 4, 3, 32], initializer=tf.contrib.layers.xavier_initializer())
+    W1 = tf.get_variable("W1", [4, 4, 3, 128], initializer=tf.contrib.layers.xavier_initializer())
     # 64 filters with shape [2,2,32]
-    W2 = tf.get_variable("W2", [2, 2, 32, 64], initializer=tf.contrib.layers.xavier_initializer())
+    W2 = tf.get_variable("W2", [2, 2, 128, 256], initializer=tf.contrib.layers.xavier_initializer())
     # 200 filters with shape [2,2,64]
-    W3 = tf.get_variable("W3", [2,2,64,200],initializer=tf.contrib.layers.xavier_initializer())
+    W3 = tf.get_variable("W3", [2,2,256,200],initializer=tf.contrib.layers.xavier_initializer())
     #Weights & bias layer 200 neurons
     W4 = tf.get_variable("W4", [200,200],initializer=tf.contrib.layers.xavier_initializer())
     B4 = tf.get_variable("B4", [200],initializer=tf.contrib.layers.xavier_initializer())
@@ -78,15 +78,15 @@ def forward_propagation(X, parameters):
     #
     A4 = tf.nn.relu(tf.matmul(A3,W4)+B4)
     #A4 = tf.contrib.layers.fully_connected(A3, 200)
-    A4_drop = tf.nn.dropout(A4, 0.2)
+    A4_drop = tf.nn.dropout(A4, 0.1)
     # FULLY-CONNECTED 100 neurons with RELU
     A5 = tf.nn.relu(tf.matmul(A4_drop,W5)+B5)
     #A5 = tf.contrib.layers.fully_connected(A4, 100)
-    A5_drop= tf.nn.dropout(A5,0.3)
+    A5_drop= tf.nn.dropout(A5,0.1)
     # FULLY-CONNECTED 50 neurons with RELU
     A6 = tf.nn.relu(tf.matmul(A5_drop,W6)+B6)
     #A6 = tf.contrib.layers.fully_connected(A5, 50)
-    A6_dop = tf.nn.dropout(A6, 0.4)
+    A6_dop = tf.nn.dropout(A6, 0.1)
     # FULLY-CONNECTED 10 neurons with Softmax (Output Layer)
     A7 = tf.nn.softmax(tf.matmul(A6_dop,W7)+B7)
     #A7 = tf.contrib.layers.fully_connected(A6, NUM_CLASSES, activation_fn=None)
@@ -113,8 +113,8 @@ def create_minibatches (X_train, Y_train, num_minibatches, batch_size = MINIBATH
 
 
 
-def model(X_train, Y_train, X_test, Y_test, learning_rate=0.009,
-          num_epochs=100, print_cost=True):
+def model(X_train, Y_train, X_test, Y_test, learning_rate = LEARNING_RATE,
+          num_epochs= EPOCHS, print_cost=True):
     """
     Implements a three-layer ConvNet in Tensorflow:
     CONV2D -> RELU -> MAXPOOL -> CONV2D -> RELU -> MAXPOOL -> FLATTEN -> FULLYCONNECTED
@@ -198,8 +198,12 @@ def model(X_train, Y_train, X_test, Y_test, learning_rate=0.009,
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
         print(accuracy)
         train_accuracy = 0
+        test_accuracy = 0
+        num_batches_test = int(X_test.shape[0] / MINIBATHC_SIZE)
+        minibatches_X_test, minibatches_Y_test = create_minibatches(X_test, Y_test, num_batches_test)
         for i in range(num_batches):
             train_accuracy = (train_accuracy + accuracy.eval({X: minibatches_X[i], Y: minibatches_Y[i]}))
+            test_accuracy = (test_accuracy + accuracy.eval({X: minibatches_X_test[i], Y: minibatches_Y_test[i]}))
         train_accuracy = train_accuracy/num_batches
         test_accuracy = accuracy.eval({X: X_test, Y: Y_test})
         print("Train Accuracy:", train_accuracy)
