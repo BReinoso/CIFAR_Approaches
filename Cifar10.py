@@ -3,7 +3,7 @@ import numpy as np
 from Constants import *
 from Augmentation import *
 from ExtractData import *
-from Model2 import *
+from Model3 import *
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import tensorflow as tf
