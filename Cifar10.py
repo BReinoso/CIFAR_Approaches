@@ -7,6 +7,8 @@ from Model3 import *
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import tensorflow as tf
+import logging
+import datetime
 
 # Main execution
 if __name__ == "__main__":
@@ -52,4 +54,4 @@ if __name__ == "__main__":
     X_test = X_test.reshape(3,IMAGE_SIZE,IMAGE_SIZE,BATCH_SIZE).transpose([3,1,2,0])
     X_test = image_convertion(X_test)
     Y_test = Y_test.transpose([1,0])
-    _, _, parameters = model(batches_array, labels_array, X_test, Y_test)
+    #_, _, parameters = model(batches_array, labels_array, X_test, Y_test, log=True)
